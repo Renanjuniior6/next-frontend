@@ -1,28 +1,27 @@
 import { RouteModel } from "@/utils/models";
 import { MapDriver } from "./MapDriver";
+import { StartRouteForm } from "./StartRouteForm";
 
 export async function getRoutes() {
-
-    const response = await fetch('http://localhost:3000/routes', {
-        cache: "force-cache",
-        next: {
-            tags: ["routes"]
-        }
-    })
-    // revalidate por demanda
-
-    return response.json()
+  const response = await fetch(`${process.env.NEST_API_URL}/routes`, {
+    cache: "force-cache",
+    next: {
+      tags: ["routes"],
+    },
+  });
+  //revalidate por demanda
+  return response.json();
 }
 
 export async function DriverPage() {
     const routes = await getRoutes();
-
+   
     return (
       <div className="flex flex-1 w-full h-full">
         <div className="w-1/3 p-2 h-full">
           <h4 className="text-3xl text-contrast mb-2">Inicie uma rota</h4>
           <div className="flex flex-col">
-            {/* <StartRouteForm> */}
+          <StartRouteForm>
               <select
                 id="route_id"
                 name="route_id"
@@ -43,10 +42,10 @@ export async function DriverPage() {
               >
                 Iniciar a viagem
               </button>
-            {/* </StartRouteForm> */}
+              </StartRouteForm>
           </div>
         </div>
-        <MapDriver />
+        <MapDriver routeElementId={"route_id"}/>
       </div>
     );
   }
